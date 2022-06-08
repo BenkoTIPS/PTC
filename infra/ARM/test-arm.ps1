@@ -11,7 +11,7 @@ az account show
 ## Set Vars
 $appName = "du22"
 $env = "arm"
-$rg = "du22-$appName-$env-rg"
+$rg = "$appName-$env-rg"
 $today = Get-Date -Format 'MMddyy-hhmm'
 $deploymentName = "arm-cli-$today"
 $templateFile = ".\myWebSite.json"

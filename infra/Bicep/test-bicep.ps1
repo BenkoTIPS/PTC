@@ -16,13 +16,13 @@ $today = Get-Date -Format 'MMddyy-hhmm'
 $deploymentName = "bicep-cli-$today"
 $templateFile = '.\main.bicep'
 $paramFile = '.\bicep.parameters.json'
-$rg = "du22-$appName-$env-rg"
+$rg = "$appName-$env-rg"
 
 ## Test original Bicep Module in a resource group
 # az group create --name $rg --location centralus
 # az deployment group create --resource-group $rg --template-file myWebSite.bicep --parameters bicep.parameters.json
 
-az deployment sub create --name $deploymentName --location centralus --template-file $templateFile --parameters $paramFile envName=$env
+az deployment sub create --name $deploymentName --location centralus --template-file main.bicep --parameters main.parameters.json
 
 ## OUTPUTS
 $outputs=$(az deployment group show --name $deploymentName --resource-group $rg --query properties.outputs) | convertfrom-json

@@ -7,7 +7,7 @@ param secretValue string
 targetScope = 'subscription'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: 'bnk-${appName}-${envName}-rg'
+  name: '${appName}-${envName}-rg'
   location: 'centralus'
 }
 

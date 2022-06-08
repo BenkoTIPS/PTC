@@ -18,14 +18,19 @@ variable "app_name" {}
 variable "env_name" {}
 variable "color" {}
 
+locals {
+  rgName = "${var.app_name}-${var.env_name}-rg"
+  hostName = "${var.app_name}-${var.env_name}-plan"
+  siteName = "${var.app_name}-${var.env_name}-site"
+}
 
 resource "azurerm_resource_group" "rg" {
-  name = "du22-${var.app_name}-${var.env_name}-rg"
+  name = local.rgName
   location = "centralus"
 }
 
 resource "azurerm_app_service_plan" "plan" {
-  name                = "${var.app_name}-${var.env_name}-plan"
+  name                = local.hostName
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   kind                = "Linux"
@@ -37,7 +42,7 @@ resource "azurerm_app_service_plan" "plan" {
 }
 
 resource "azurerm_app_service" "myApp" {
-  name                = "${var.app_name}-${var.env_name}-site"
+  name                = local.siteName
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   app_service_plan_id = azurerm_app_service_plan.plan.id
