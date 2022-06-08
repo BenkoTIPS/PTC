@@ -1,0 +1,85 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "appName": { "type": "string"},
+        "color":{"type": "string", "defaultValue":"lightblue"},
+        "envName": { "type": "string"},
+        "secretValue": {"type": "securestring"}
+    },
+    "functions": [],
+    "variables": {
+        "sitename":"[concat(parameters('appName'),'-',parameters('envName'),'-web')]",
+        "hostName":"[concat(parameters('appName'),'-',parameters('envName'),'-plan')]",
+        "location":"[resourceGroup().location]"
+    },
+    "resources": [
+        {
+            "name": "[variables('hostName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2020-12-01",
+            "location": "[variables('location')]",
+            "kind":"app,linux",
+            "sku": {
+                "name": "S1",
+                "capacity": 1
+            },
+            "tags": {
+                "displayName": "[variables('hostName')]"
+            },
+            "properties": {
+                "reserved": true
+           }
+        },
+        {
+            "name": "[variables('sitename')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2020-12-01",
+            "location": "[variables('location')]",
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', variables('hostName'))]": "Resource",
+                "displayName": "[variables('sitename')]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('hostName'))]"
+            ],
+            "properties": {
+                "siteConfig" : {
+                    "linuxFxVersion": "DOTNETCORE|6.0",
+                    "appCommandLine": "[concat('dotnet ', 'myApp.dll')]"
+                },
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostName'))]"
+            },
+            "resources" : [
+                {
+                    "name": "appsettings",
+                    "type": "config",
+                    "location": "[variables('location')]",
+                    "apiVersion": "2015-08-01",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/sites', variables('sitename'))]"
+                    ],
+                    "tags": {
+                        "displayName": "config"
+                    },
+                    "properties": {
+                        "EnvName": "[parameters('envName')]",
+                        "FavoriteColor": "[parameters('color')]",
+                        "MySecret": "[parameters('secretValue')]",
+                        "WEBSITE_RUN_FROM_PACKAGE" : 1
+                    }
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "siteName": {
+            "type": "string",
+            "value": "[variables('sitename')]"
+        },
+        "rgName": {
+            "type": "string",
+            "value": "[resourceGroup().name]"
+        }
+    }
+}
