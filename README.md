@@ -12,9 +12,6 @@ Understanding how your data works is crucial to taking advantage of the capabili
 ### IaC Bake Off - ARM vs Bicep vs Terraform vs Pulumi
 Infrastructure as Code comes in many flavors, and the Azure Cloud's default deployment templates work with Azure Resource Manager (ARM) to define and deploy infrastructure. Working with the JSON format of ARM can be challenging, but Microsoft has introduced a language processor called Bicep which generates ARM as output. At the same time there are other options, including scripting tools, Terraform, Pulumi, Ansible and others. In this session we'll compare creating infrastructure using ARM, Terraform and Bicep, and compare pros and cons to each.
 
-## Basic Infrastructure for app
-![](./assets/infra-v1.png)
-
 ## References
 
 ### Governance Best Practices
