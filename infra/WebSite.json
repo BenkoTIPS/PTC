@@ -7,7 +7,8 @@
       "minLength": 1
     },
     "envName": { "type": "string" },
-    "FavoriteColor": { "type": "string" },
+    "favoriteColor": { "type": "string" },
+    "tenantId": { "type": "string" },
     "skuName": {
       "type": "string",
       "defaultValue": "F1",
@@ -57,12 +58,7 @@
       "defaultValue": "Basic",
       "allowedValues": [
         "Basic",
-        "S0",
-        "S1",
-        "S2",
-        "P1",
-        "P2",
-        "P3"
+        "S0"
       ],
       "metadata": {
         "description": "Describes the performance level for Edition"
@@ -70,12 +66,62 @@
     }
   },
   "variables": {
-    "webSiteName": "[parameters('appName')]",
-    "hostingPlanName": "[concat(parameters('appName'),'-plan')]",
-    "insightsName": "[concat(parameters('appName'),'-ai')]",
-    "du22dbmsName": "[concat('du22dbms', uniqueString(resourceGroup().id))]"
+    "prefix": "[concat(parameters('envName'),'-',parameters('appName'))]",
+    "webSiteName": "[concat(variables('prefix'),'-site')]",
+    "hostingPlanName": "[concat(variables('prefix'),'-plan')]",
+    "insightsName": "[concat(variables('prefix'),'-ai')]",
+    "du22dbmsName": "[tolower(concat(variables('prefix'),'-dbms'))]",
+    "keyvaultName": "[concat(variables('prefix'),'-kv')]"
   },
   "resources": [
+    {
+      "name": "[variables('keyvaultName')]",
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2019-09-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "[variables('keyvaultName')]"
+      },
+      "properties": {
+        "enabledForDeployment": true,
+        "enabledForTemplateDeployment": true,
+        "enabledForDiskEncryption": true,
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "objectId",
+            "permissions": {
+              "keys": [
+                "Get"
+              ],
+              "secrets": [
+                "List",
+                "Get",
+                "Set"
+              ]
+            }
+          }
+        ],
+        "sku": {
+          "name": "standard",
+          "family": "A"
+        }
+      },
+      "resources": [
+        {
+          "type": "secrets",
+          "name": "keyVaultSecret1",
+          "apiVersion": "2016-10-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.KeyVault/vaults', variables('keyvaultName'))]"
+          ],
+          "properties": {
+            "value": "secretValue"
+          }
+        }
+      ]
+    },
     {
       "apiVersion": "2015-08-01",
       "name": "[variables('hostingPlanName')]",
@@ -147,7 +193,7 @@
       "type": "Microsoft.Sql/servers",
       "location": "[resourceGroup().location]",
       "apiVersion": "2014-04-01-preview",
-      "dependsOn": [ ],
+      "dependsOn": [],
       "tags": {
         "displayName": "du22dbms"
       },
