@@ -1,13 +1,13 @@
 # Permit to Cloud & Infrastructure As Code
 
 ## Sessions
-### Permit To Cloud - Land with Confidence in Azure [slides](./assets//du22-Benkovich-PermitToCloud.pdf)
+### Permit To Cloud - Land with Confidence in Azure 
 An application is an idea that has code, data and infrastructure, and choosing whether to build a conveyor belt or to put up guard rails along the path is important in maintaining velocity to the cloud. In this session, we explore the tools available in Azure for creating and enforcing governance policy, standards and infrastructure, including Azure resource template technologies and Bicep, Azure blueprints, as well as DevOps processes including GitHub Actions that you can use to ensure your cloud journey is predictable, secure and compliant. We’ll see how the tools work and share best practices for maturing your cloud journey.
 
-### Performance Tuning Strategies for Cosmos DB [slides](./assets/du22-Cosmos%20for%20Relational%20Dev.pdf)
+### Performance Tuning Strategies for Cosmos DB 
 Understanding how your data works is crucial to taking advantage of the capabilities and power of Cosmos DB, from setting up and migrating data, to querying to understanding performance consequences of data manipulation. Designing your data access plan is critical to performance, from selection of partition keys to indexing strategies to change feeds. We'll explore data architecture topics and tuning practices to get reliable and predictable performance from your Cosmos investment.
 
-### IaC Bake Off - ARM vs Bicep vs Terraform vs Pulumi [slides](./assets/du22-IaC-Azure.pdf)
+### IaC Bake Off - ARM vs Bicep vs Terraform vs Pulumi 
 Infrastructure as Code comes in many flavors, and the Azure Cloud's default deployment templates work with Azure Resource Manager (ARM) to define and deploy infrastructure. Working with the JSON format of ARM can be challenging, but Microsoft has introduced a language processor called Bicep which generates ARM as output. At the same time there are other options, including scripting tools, Terraform, Pulumi, Ansible and others. In this session we'll compare creating infrastructure using ARM, Terraform and Bicep, and compare pros and cons to each.
 
 ## References
