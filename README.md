@@ -1,6 +1,4 @@
-# DevUp 2022 - Permit to Cloud & Infrastructure As Code
-
-This repo is the code from our session at DevUp 2022 in St. Louis. 
+# Permit to Cloud & Infrastructure As Code
 
 ## Sessions
 ### Permit To Cloud - Land with Confidence in Azure [slides](./assets//du22-Benkovich-PermitToCloud.pdf)
